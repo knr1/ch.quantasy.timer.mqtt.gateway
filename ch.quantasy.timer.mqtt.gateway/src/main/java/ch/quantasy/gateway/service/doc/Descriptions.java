@@ -43,7 +43,7 @@ package ch.quantasy.gateway.service.doc;
 
 
 import ch.quantasy.gateway.service.timer.TimerServiceContract;
-import ch.quantasy.mqtt.gateway.client.AyamlClientContract;
+import ch.quantasy.mqtt.gateway.client.contract.AyamlServiceContract;
 import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeMap;
@@ -60,7 +60,7 @@ public class Descriptions {
         ContractClasses.add(TimerServiceContract.class.getName());
 
         for (String contractClassName : ContractClasses) {
-            AyamlClientContract contract = (AyamlClientContract) (Class.forName(contractClassName).getConstructor(String.class).newInstance("<id>"));
+            AyamlServiceContract contract = (AyamlServiceContract) (Class.forName(contractClassName).getConstructor(String.class).newInstance("<id>"));
             System.out.println(contract.toMD());
         }
     }

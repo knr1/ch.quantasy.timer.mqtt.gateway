@@ -41,12 +41,17 @@
  */
 package ch.quantasy.gateway.service.timer;
 
+import ch.quantasy.gateway.message.EpochDeltaEvent;
+import ch.quantasy.gateway.message.TimerConfigurationStatus;
+import ch.quantasy.gateway.message.TimerIntent;
+import ch.quantasy.gateway.message.UnixEpochStatus;
 import ch.quantasy.mqtt.gateway.client.GatewayClient;
 import ch.quantasy.timer.DeviceTickerCancel;
 import ch.quantasy.timer.DeviceTickerConfiguration;
 import ch.quantasy.timer.TimerDevice;
 import ch.quantasy.timer.TimerDeviceCallback;
 import java.net.URI;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.logging.Level;
@@ -66,18 +71,19 @@ public class TimerService extends GatewayClient<TimerServiceContract> implements
 
         configurations = new TreeSet<>();
         device = new TimerDevice(this);
-        subscribe(getContract().INTENT_CANCEL+"/#", (topic, payload) -> {
+        subscribe(getContract().INTENT + "/#", (topic, payload) -> {
             try {
-                DeviceTickerCancel cancel = super.getMapper().readValue(payload, DeviceTickerCancel.class);
-                device.cancel(cancel);
-            } catch (Exception ex) {
-                Logger.getLogger(TimerService.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
-        subscribe(getContract().INTENT_CONFIGURATION + "/#", (topic, payload) -> {
-            try {
-                DeviceTickerConfiguration configuration = super.getMapper().readValue(payload, DeviceTickerConfiguration.class);
-                device.setTickerConfiguration(configuration);
+                Set<TimerIntent> timerIntents = toMessageSet(payload, TimerIntent.class);
+                for (TimerIntent timerIntent : timerIntents) {
+                    if (!timerIntent.isValid()) {
+                        continue;
+                    }
+                    if (timerIntent.cancel != null) {
+                        device.cancel(new DeviceTickerCancel(timerIntent.id));
+                    } else {
+                        device.setTickerConfiguration(new DeviceTickerConfiguration(timerIntent.id, timerIntent.epoch, timerIntent.first, timerIntent.interval, timerIntent.last));
+                    }
+                }
             } catch (Exception ex) {
                 Logger.getLogger(TimerService.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -97,15 +103,15 @@ public class TimerService extends GatewayClient<TimerServiceContract> implements
             return;
         }
         configurations.add(configuration);
-        publishStatus(getContract().STATUS_CONFIGURATION + "/" + configuration.getId(), configuration);
+        super.getPublishingCollector().readyToPublish(getContract().STATUS_CONFIGURATION + "/" + configuration.getId(), new TimerConfigurationStatus(configuration));
     }
 
     @Override
     public void onTick(String id, Long epochDelta) {
         if (id.equals(super.getParameters().getClientID())) {
-            publishStatus(getContract().STATUS_UNIX_EPOCH, new UnixEpochStatus());
+            super.getPublishingCollector().readyToPublish(getContract().STATUS_UNIX_EPOCH, new UnixEpochStatus());
         } else {
-            publishEvent(getContract().EVENT_TICK + "/" + id, epochDelta);
+            super.getPublishingCollector().readyToPublish(getContract().EVENT_TICK + "/" + id, new EpochDeltaEvent(epochDelta));
         }
     }
 
@@ -115,21 +121,7 @@ public class TimerService extends GatewayClient<TimerServiceContract> implements
             return;
         }
         configurations.remove(configuration);
-        publishStatus(getContract().STATUS_CONFIGURATION + "/" + configuration.getId(), null);
-    }
-
-    final class UnixEpochStatus {
-
-        private long millisceconds;
-
-        public UnixEpochStatus() {
-            millisceconds = System.currentTimeMillis();
-        }
-
-        public long getMillisceconds() {
-            return millisceconds;
-        }
-
+        super.getPublishingCollector().clearPublish(getContract().STATUS_CONFIGURATION + "/" + configuration.getId());
     }
 
 }

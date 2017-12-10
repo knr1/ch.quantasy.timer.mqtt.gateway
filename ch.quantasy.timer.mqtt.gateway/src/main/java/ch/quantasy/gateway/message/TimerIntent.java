@@ -39,46 +39,55 @@
  *
  *
  */
-package ch.quantasy.gateway;
+package ch.quantasy.gateway.message;
 
-import ch.quantasy.gateway.message.TimerIntent;
-import ch.quantasy.gateway.service.timer.TimerServiceContract;
-import ch.quantasy.mqtt.gateway.client.contract.AyamlServiceContract;
-import ch.quantasy.mqtt.gateway.client.GatewayClient;
-import ch.quantasy.timer.DeviceTickerConfiguration;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import java.io.IOException;
-import java.net.URI;
-import java.util.Map;
-import org.eclipse.paho.client.mqttv3.MqttException;
+import ch.quantasy.mqtt.gateway.client.message.AnIntent;
+import ch.quantasy.mqtt.gateway.client.message.annotations.NonNull;
+import ch.quantasy.mqtt.gateway.client.message.annotations.Nullable;
+import ch.quantasy.mqtt.gateway.client.message.annotations.Period;
+import ch.quantasy.mqtt.gateway.client.message.annotations.Range;
+import ch.quantasy.mqtt.gateway.client.message.annotations.StringForm;
 
 /**
  *
  * @author reto
  */
-public class TimerServiceTestMain {
+public class TimerIntent extends AnIntent {
 
-    public static void main(String[] args) throws MqttException, InterruptedException, JsonProcessingException, IOException {
-        URI mqttURI = URI.create("tcp://127.0.0.1:1883");
-        if (args.length > 0) {
-            mqttURI = URI.create(args[0]);
-        } else {
-            System.out.printf("Per default, 'tcp://127.0.0.1:1883' is chosen.\nYou can provide another address as first argument i.e.: tcp://iot.eclipse.org:1883\n");
-        }
-        System.out.printf("\n%s will be used as broker address.\n", mqttURI);
+    @NonNull
+    @StringForm
+    public String id;
+    @Period
+    @Nullable
+    public Long epoch;
+    @Period(to = Integer.MAX_VALUE)
+    @Nullable
+    public Integer first;
+    @Period(to = Integer.MAX_VALUE)
+    @Nullable
+    public Integer interval;
+    @Period(to = Integer.MAX_VALUE)
+    @Nullable
+    public Integer last;
+    @Nullable
+    public Boolean cancel;
 
-        TimerServiceContract timerContract = new TimerServiceContract("prisma");
-        GatewayClient gc = new GatewayClient(mqttURI, "tester" + ((int) (10000 * Math.random())), new AyamlServiceContract("TimerTester", "prisma", "1") {
-            @Override
-            protected void describe(Map<String, String> descriptions) {
-            }
-        });
-        gc.connect();
-        gc.getPublishingCollector().readyToPublish(timerContract.INTENT, new TimerIntent("123abc", System.currentTimeMillis(), 0, 2000, null, null));
-        System.in.read();
-        gc.getPublishingCollector().readyToPublish(timerContract.INTENT, new TimerIntent("123abc", null, null, null, null, true));
-
+    public TimerIntent(String id) {
+        this.id = id;
     }
 
-}
+    private TimerIntent() {
+    }
 
+    public TimerIntent(String id, Long epoch, Integer first, Integer interval, Integer last, Boolean cancel) {
+        this.id = id;
+        this.epoch = epoch;
+        this.first = first;
+        this.interval = interval;
+        this.last = last;
+        this.cancel = cancel;
+    }
+    
+    
+
+}

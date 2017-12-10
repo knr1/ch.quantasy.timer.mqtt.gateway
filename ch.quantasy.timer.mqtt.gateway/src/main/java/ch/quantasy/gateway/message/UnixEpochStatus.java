@@ -39,46 +39,22 @@
  *
  *
  */
-package ch.quantasy.gateway;
+package ch.quantasy.gateway.message;
 
-import ch.quantasy.gateway.message.TimerIntent;
-import ch.quantasy.gateway.service.timer.TimerServiceContract;
-import ch.quantasy.mqtt.gateway.client.contract.AyamlServiceContract;
-import ch.quantasy.mqtt.gateway.client.GatewayClient;
-import ch.quantasy.timer.DeviceTickerConfiguration;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import java.io.IOException;
-import java.net.URI;
-import java.util.Map;
-import org.eclipse.paho.client.mqttv3.MqttException;
+import ch.quantasy.mqtt.gateway.client.message.AStatus;
+import ch.quantasy.mqtt.gateway.client.message.annotations.Period;
 
 /**
  *
  * @author reto
  */
-public class TimerServiceTestMain {
+public class UnixEpochStatus extends AStatus{
 
-    public static void main(String[] args) throws MqttException, InterruptedException, JsonProcessingException, IOException {
-        URI mqttURI = URI.create("tcp://127.0.0.1:1883");
-        if (args.length > 0) {
-            mqttURI = URI.create(args[0]);
-        } else {
-            System.out.printf("Per default, 'tcp://127.0.0.1:1883' is chosen.\nYou can provide another address as first argument i.e.: tcp://iot.eclipse.org:1883\n");
+        @Period
+        public long millisceconds;
+
+        public UnixEpochStatus() {
+            millisceconds = System.currentTimeMillis();
         }
-        System.out.printf("\n%s will be used as broker address.\n", mqttURI);
-
-        TimerServiceContract timerContract = new TimerServiceContract("prisma");
-        GatewayClient gc = new GatewayClient(mqttURI, "tester" + ((int) (10000 * Math.random())), new AyamlServiceContract("TimerTester", "prisma", "1") {
-            @Override
-            protected void describe(Map<String, String> descriptions) {
-            }
-        });
-        gc.connect();
-        gc.getPublishingCollector().readyToPublish(timerContract.INTENT, new TimerIntent("123abc", System.currentTimeMillis(), 0, 2000, null, null));
-        System.in.read();
-        gc.getPublishingCollector().readyToPublish(timerContract.INTENT, new TimerIntent("123abc", null, null, null, null, true));
-
     }
-
-}
 

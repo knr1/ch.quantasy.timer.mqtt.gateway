@@ -71,7 +71,7 @@ public class DeviceTickerConfiguration implements Comparable<DeviceTickerConfigu
      * indicates this by sending its current time.
      */
     public void setEpoch(Long epoch) {
-        if (epoch < 0) {
+        if (epoch!=null && epoch < 0) {
             return;
         }
         this.epoch = epoch;
@@ -91,7 +91,7 @@ public class DeviceTickerConfiguration implements Comparable<DeviceTickerConfigu
      * {@link #setEpoch(java.lang.Long)} when the ticker begins ticking.
      */
     public void setFirst(Integer first) {
-        if (first < 0) {
+        if (first!=null && first < 0) {
             return;
         }
         this.first = first;
@@ -119,7 +119,7 @@ public class DeviceTickerConfiguration implements Comparable<DeviceTickerConfigu
      * the ticker terminates.
      */
     public void setLast(Integer last) {
-        if (last < 0) {
+        if (last!=null && last < 0) {
             return;
         }
         this.last = last;
@@ -135,7 +135,7 @@ public class DeviceTickerConfiguration implements Comparable<DeviceTickerConfigu
      * no repetition. Negative values are ignored (old value persists).
      */
     public void setInterval(Integer interval) {
-        if (interval < 0) {
+        if (interval!=null && interval < 0) {
             return;
         }
         this.interval = interval;
@@ -195,9 +195,7 @@ public class DeviceTickerConfiguration implements Comparable<DeviceTickerConfigu
         if (getFirst() == null) {
             return null;
         }
-        Long a=System.currentTimeMillis();
-        Long x=getEpochDelta() + getFirst();
-        return x;
+        return getEpochDelta() + getFirst();
     }
 
     public boolean isFirstReached() {
