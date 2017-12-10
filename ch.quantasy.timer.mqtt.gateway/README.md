@@ -18,7 +18,7 @@ To run TimerMqWay, you need Java (7 or higher) and a running MQTT-Broker. You ca
 However, you can program your business logic in any programming language that can communicate over MQTT.
 
 
-Then run the following command in order to use an MQTT-Server at localhost
+Then run the following command in order to use an MQTT-Broker at localhost
 ```sh
 $ java -jar TimerMqWay.jar tcp://127.0.0.1:1883
 ```
