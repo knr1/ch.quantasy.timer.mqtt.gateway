@@ -41,12 +41,11 @@
  */
 package ch.quantasy.gateway.service.doc;
 
-
-import ch.quantasy.gateway.service.timer.TimerServiceContract;
+import static ch.quantasy.gateway.service.doc.ClassFinder.find;
+import ch.quantasy.mqtt.gateway.client.contract.AServiceContract;
 import ch.quantasy.mqtt.gateway.client.contract.AyamlServiceContract;
-import java.util.SortedMap;
+import java.util.List;
 import java.util.SortedSet;
-import java.util.TreeMap;
 import java.util.TreeSet;
 
 /**
@@ -56,12 +55,21 @@ import java.util.TreeSet;
 public class Descriptions {
 
     public static void main(String[] args) throws Exception {
-        SortedSet<String> ContractClasses = new TreeSet<>();
-        ContractClasses.add(TimerServiceContract.class.getName());
+        List<Class<?>> classes = find("ch.quantasy.gateway.service");
+        SortedSet<String> contractClassNames = new TreeSet();
+        for (Class singleClass : classes) {
+            if (AyamlServiceContract.class.isAssignableFrom(singleClass)) {
+                contractClassNames.add(singleClass.getName());
+            }
+            
+        }
 
-        for (String contractClassName : ContractClasses) {
-            AyamlServiceContract contract = (AyamlServiceContract) (Class.forName(contractClassName).getConstructor(String.class).newInstance("<id>"));
-            System.out.println(contract.toMD());
+        for (String contractClassName : contractClassNames) {
+            try {
+                AyamlServiceContract contract =  (AyamlServiceContract)(Class.forName(contractClassName).getConstructor(String.class).newInstance("<id>"));
+                System.out.println(contract.toMD());
+            } catch (Exception ex) {
+            }
         }
     }
 }
