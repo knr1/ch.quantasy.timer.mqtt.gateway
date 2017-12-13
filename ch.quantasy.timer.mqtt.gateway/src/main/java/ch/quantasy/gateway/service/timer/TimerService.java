@@ -73,7 +73,7 @@ public class TimerService extends GatewayClient<TimerServiceContract> implements
         device = new TimerDevice(this);
         subscribe(getContract().INTENT + "/#", (topic, payload) -> {
             try {
-                Set<TimerIntent> timerIntents = toMessageSet(payload, TimerIntent.class);
+                SortedSet<TimerIntent> timerIntents = toMessageSet(payload, TimerIntent.class);
                 for (TimerIntent timerIntent : timerIntents) {
                     if (!timerIntent.isValid()) {
                         continue;

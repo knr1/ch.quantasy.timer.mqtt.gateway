@@ -45,7 +45,6 @@ import ch.quantasy.mqtt.gateway.client.message.AnIntent;
 import ch.quantasy.mqtt.gateway.client.message.annotations.NonNull;
 import ch.quantasy.mqtt.gateway.client.message.annotations.Nullable;
 import ch.quantasy.mqtt.gateway.client.message.annotations.Period;
-import ch.quantasy.mqtt.gateway.client.message.annotations.Range;
 import ch.quantasy.mqtt.gateway.client.message.annotations.StringForm;
 
 /**
@@ -77,6 +76,10 @@ public class TimerIntent extends AnIntent {
     }
 
     private TimerIntent() {
+    }
+    
+    public TimerIntent(String id,Boolean cancel){
+        this(id, null, null, null, null, cancel);
     }
 
     public TimerIntent(String id, Long epoch, Integer first, Integer interval, Integer last, Boolean cancel) {
