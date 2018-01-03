@@ -68,7 +68,9 @@ public class TimerMqWay {
     }
 
     public static void main(String[] args) throws MqttException, InterruptedException, JsonProcessingException, IOException {
+        //URI mqttURI = URI.create("tcp://smarthome01:1883");
         URI mqttURI = URI.create("tcp://127.0.0.1:1883");
+
         if (args.length > 0) {
             mqttURI = URI.create(args[0]);
         } else {
@@ -76,7 +78,7 @@ public class TimerMqWay {
         }
         System.out.printf("\n%s will be used as broker address.\n", mqttURI);
 
-        TimerService s = new TimerService(mqttURI,computerName);
+        TimerService s = new TimerService(mqttURI, computerName);
         System.in.read();
     }
 }
