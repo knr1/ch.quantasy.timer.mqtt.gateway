@@ -45,7 +45,7 @@ import ch.quantasy.gateway.message.TimerIntent;
 import ch.quantasy.gateway.service.timer.TimerServiceContract;
 import ch.quantasy.mqtt.gateway.client.contract.AyamlServiceContract;
 import ch.quantasy.mqtt.gateway.client.GatewayClient;
-import ch.quantasy.timer.DeviceTickerConfiguration;
+import ch.quantasy.mqtt.gateway.client.message.Message;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.io.IOException;
 import java.net.URI;
@@ -70,8 +70,10 @@ public class TimerServiceTestMain {
         TimerServiceContract timerContract = new TimerServiceContract("prisma");
         GatewayClient gc = new GatewayClient(mqttURI, "tester" + ((int) (10000 * Math.random())), new AyamlServiceContract("TimerTester", "prisma", "1") {
             @Override
-            protected void describe(Map<String, String> descriptions) {
+            public void setMessageTopics(Map<String, Class<? extends Message>> messageTopicMap) {
+                // Nothing here
             }
+
         });
         gc.connect();
         gc.getPublishingCollector().readyToPublish(timerContract.INTENT, new TimerIntent("123abc", System.currentTimeMillis(), 0, 2000, null, null));
@@ -81,4 +83,3 @@ public class TimerServiceTestMain {
     }
 
 }
-

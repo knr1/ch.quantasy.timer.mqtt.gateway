@@ -46,6 +46,8 @@ import ch.quantasy.gateway.message.TimerConfigurationStatus;
 import ch.quantasy.gateway.message.TimerIntent;
 import ch.quantasy.gateway.message.UnixEpochStatus;
 import ch.quantasy.mqtt.gateway.client.contract.AyamlServiceContract;
+import ch.quantasy.mqtt.gateway.client.message.Message;
+import java.util.Map;
 
 /**
  *
@@ -68,11 +70,15 @@ public class TimerServiceContract extends AyamlServiceContract {
         EVENT_TICK = EVENT + "/" + TICK;
         UNIX_EPOCH = "unixEpoch";
         STATUS_UNIX_EPOCH = STATUS + "/" + UNIX_EPOCH;
+    }
 
-        addMessageTopic(INTENT, TimerIntent.class);
-        addMessageTopic(STATUS_CONFIGURATION + "/<id>", TimerConfigurationStatus.class);
-        addMessageTopic(EVENT_TICK + "/<id>", EpochDeltaEvent.class);
-        addMessageTopic(STATUS_UNIX_EPOCH, UnixEpochStatus.class);
+    @Override
+    public void setMessageTopics(Map<String, Class<? extends Message>> messageTopicMap) {
+
+        messageTopicMap.put(INTENT, TimerIntent.class);
+        messageTopicMap.put(STATUS_CONFIGURATION + "/<id>", TimerConfigurationStatus.class);
+        messageTopicMap.put(EVENT_TICK + "/<id>", EpochDeltaEvent.class);
+        messageTopicMap.put(STATUS_UNIX_EPOCH, UnixEpochStatus.class);
 
     }
 }
