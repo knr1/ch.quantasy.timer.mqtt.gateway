@@ -1,7 +1,7 @@
 /*
- *   "TimerMqWay"
+ *   "TiMqWay"
  *
- *    TimerMqWay(tm): A gateway to provide a universal timer ability.
+ *    TiMqWay(tm): A gateway to provide an MQTT-View for the Tinkerforge(tm) world (Tinkerforge-MQTT-Gateway).
  *
  *    Copyright (c) 2016 Bern University of Applied Sciences (BFH),
  *    Research Institute for Security in the Information Society (RISIS), Wireless Communications & Secure Internet of Things (WiCom & SIoT),
@@ -39,43 +39,42 @@
  *
  *
  */
-package ch.quantasy.gateway.message;
+package ch.quantasy.gateway.binding.doc;
 
-import ch.quantasy.mqtt.gateway.client.message.AStatus;
-import ch.quantasy.mqtt.gateway.client.message.annotations.NonNull;
-import ch.quantasy.mqtt.gateway.client.message.annotations.Nullable;
-import ch.quantasy.mqtt.gateway.client.message.annotations.Period;
-import ch.quantasy.mqtt.gateway.client.message.annotations.StringForm;
-import ch.quantasy.timer.DeviceTickerConfiguration;
+import ch.quantasy.gateway.binding.TimerServiceContract;
+import static ch.quantasy.gateway.binding.doc.ClassFinder.find;
+import java.util.Comparator;
+import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  *
  * @author reto
  */
-public class TimerConfigurationStatus extends AStatus{
-    @NonNull
-    @StringForm
-    public String id;
-    @Period
-    @Nullable
-    public Long epoch;
-    @Period(to = Integer.MAX_VALUE)
-    @Nullable
-    public Integer first;
-    @Period(to = Integer.MAX_VALUE)
-    @Nullable
-    public Integer interval;
-    @Period(to = Integer.MAX_VALUE)
-    @Nullable
-    public Integer last;
+public class Descriptions {
 
-    public TimerConfigurationStatus(DeviceTickerConfiguration configuration) {
-        id=configuration.getId();
-        epoch=configuration.getEpoch();
-        first=configuration.getFirst();
-        interval=configuration.getInterval();
-        last=configuration.getLast();
+    public static void main(String[] args) throws Exception {
+        List<Class<?>> classes = find("ch.quantasy.gateway.binding");
+        SortedSet<String> contractClassNames = new TreeSet(new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                return o1.compareToIgnoreCase(o2);
+            }
+        });
+        for (Class singleClass : classes) {
+            if (TimerServiceContract.class.isAssignableFrom(singleClass)) {
+                contractClassNames.add(singleClass.getName());
+            }
+        }
+
+        for (String contractClassName : contractClassNames) {
+            try {
+                TimerServiceContract contract = (TimerServiceContract) (Class.forName(contractClassName).getConstructor(String.class).newInstance("<id>"));
+                contract.publishContracts();
+                System.out.println(contract.toMD());
+            } catch (Exception ex) {
+            }
+        }
     }
-    
-    
 }

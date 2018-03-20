@@ -39,24 +39,43 @@
  *
  *
  */
-package ch.quantasy.gateway.message;
+package ch.quantasy.gateway.binding;
 
-import ch.quantasy.mqtt.gateway.client.message.AnEvent;
+import ch.quantasy.mqtt.gateway.client.message.AStatus;
+import ch.quantasy.mqtt.gateway.client.message.annotations.NonNull;
+import ch.quantasy.mqtt.gateway.client.message.annotations.Nullable;
 import ch.quantasy.mqtt.gateway.client.message.annotations.Period;
+import ch.quantasy.mqtt.gateway.client.message.annotations.StringForm;
+import ch.quantasy.timer.DeviceTickerConfiguration;
 
 /**
  *
  * @author reto
  */
-public class EpochDeltaEvent extends AnEvent{
+public class TimerConfigurationStatus extends AStatus{
+    @NonNull
+    @StringForm
+    public String id;
     @Period
-    Long value;
+    @Nullable
+    public Long epoch;
+    @Period(to = Integer.MAX_VALUE)
+    @Nullable
+    public Integer first;
+    @Period(to = Integer.MAX_VALUE)
+    @Nullable
+    public Integer interval;
+    @Period(to = Integer.MAX_VALUE)
+    @Nullable
+    public Integer last;
 
-    private EpochDeltaEvent() {
+    public TimerConfigurationStatus(DeviceTickerConfiguration configuration) {
+        id=configuration.getId();
+        epoch=configuration.getEpoch();
+        first=configuration.getFirst();
+        interval=configuration.getInterval();
+        last=configuration.getLast();
     }
-
-    public EpochDeltaEvent(Long value) {
-        this.value = value;
-    }
+    
     
 }

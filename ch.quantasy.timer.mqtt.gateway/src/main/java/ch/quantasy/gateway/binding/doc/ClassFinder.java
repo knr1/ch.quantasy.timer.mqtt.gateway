@@ -39,11 +39,9 @@
  *
  *
  */
-package ch.quantasy.gateway.service.doc;
+package ch.quantasy.gateway.binding.doc;
 
 import ch.quantasy.mqtt.gateway.client.message.AnIntent;
-import ch.quantasy.mqtt.gateway.client.message.Intent;
-import java.lang.*;
 import java.net.*;
 import java.util.*;
 import java.io.*;

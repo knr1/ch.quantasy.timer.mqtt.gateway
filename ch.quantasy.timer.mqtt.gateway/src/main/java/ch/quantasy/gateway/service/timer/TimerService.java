@@ -41,10 +41,11 @@
  */
 package ch.quantasy.gateway.service.timer;
 
-import ch.quantasy.gateway.message.EpochDeltaEvent;
-import ch.quantasy.gateway.message.TimerConfigurationStatus;
-import ch.quantasy.gateway.message.TimerIntent;
-import ch.quantasy.gateway.message.UnixEpochStatus;
+import ch.quantasy.gateway.binding.EpochDeltaEvent;
+import ch.quantasy.gateway.binding.TimerConfigurationStatus;
+import ch.quantasy.gateway.binding.TimerIntent;
+import ch.quantasy.gateway.binding.TimerServiceContract;
+import ch.quantasy.gateway.binding.UnixEpochStatus;
 import ch.quantasy.mqtt.gateway.client.GatewayClient;
 import ch.quantasy.timer.DeviceTickerCancel;
 import ch.quantasy.timer.DeviceTickerConfiguration;

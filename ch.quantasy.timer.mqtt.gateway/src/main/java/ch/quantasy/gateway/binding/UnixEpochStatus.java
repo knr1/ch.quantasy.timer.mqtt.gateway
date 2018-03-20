@@ -1,7 +1,7 @@
 /*
- *   "TiMqWay"
+ *   "TimerMqWay"
  *
- *    TiMqWay(tm): A gateway to provide an MQTT-View for the Tinkerforge(tm) world (Tinkerforge-MQTT-Gateway).
+ *    TimerMqWay(tm): A gateway to provide a universal timer ability.
  *
  *    Copyright (c) 2016 Bern University of Applied Sciences (BFH),
  *    Research Institute for Security in the Information Society (RISIS), Wireless Communications & Secure Internet of Things (WiCom & SIoT),
@@ -39,37 +39,22 @@
  *
  *
  */
-package ch.quantasy.gateway.service.doc;
+package ch.quantasy.gateway.binding;
 
-import static ch.quantasy.gateway.service.doc.ClassFinder.find;
-import ch.quantasy.mqtt.gateway.client.contract.AServiceContract;
-import ch.quantasy.mqtt.gateway.client.contract.AyamlServiceContract;
-import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import ch.quantasy.mqtt.gateway.client.message.AStatus;
+import ch.quantasy.mqtt.gateway.client.message.annotations.Period;
 
 /**
  *
  * @author reto
  */
-public class Descriptions {
+public class UnixEpochStatus extends AStatus{
 
-    public static void main(String[] args) throws Exception {
-        List<Class<?>> classes = find("ch.quantasy.gateway.service");
-        SortedSet<String> contractClassNames = new TreeSet();
-        for (Class singleClass : classes) {
-            if (AyamlServiceContract.class.isAssignableFrom(singleClass)) {
-                contractClassNames.add(singleClass.getName());
-            }
-            
-        }
+        @Period
+        public long millisceconds;
 
-        for (String contractClassName : contractClassNames) {
-            try {
-                AyamlServiceContract contract =  (AyamlServiceContract)(Class.forName(contractClassName).getConstructor(String.class).newInstance("<id>"));
-                System.out.println(contract.toMD());
-            } catch (Exception ex) {
-            }
+        public UnixEpochStatus() {
+            millisceconds = System.currentTimeMillis();
         }
     }
-}
+

@@ -39,46 +39,58 @@
  *
  *
  */
-package ch.quantasy.gateway.service.timer;
+package ch.quantasy.gateway.binding;
 
-import ch.quantasy.gateway.message.EpochDeltaEvent;
-import ch.quantasy.gateway.message.TimerConfigurationStatus;
-import ch.quantasy.gateway.message.TimerIntent;
-import ch.quantasy.gateway.message.UnixEpochStatus;
-import ch.quantasy.mqtt.gateway.client.contract.AyamlServiceContract;
-import ch.quantasy.mqtt.gateway.client.message.Message;
-import java.util.Map;
+import ch.quantasy.mqtt.gateway.client.message.AnIntent;
+import ch.quantasy.mqtt.gateway.client.message.annotations.NonNull;
+import ch.quantasy.mqtt.gateway.client.message.annotations.Nullable;
+import ch.quantasy.mqtt.gateway.client.message.annotations.Period;
+import ch.quantasy.mqtt.gateway.client.message.annotations.StringForm;
 
 /**
  *
  * @author reto
  */
-public class TimerServiceContract extends AyamlServiceContract {
+public class TimerIntent extends AnIntent {
 
-    private final String CONFIGURATION;
-    public final String STATUS_CONFIGURATION;
-    private final String TICK;
-    public final String EVENT_TICK;
-    private final String UNIX_EPOCH;
-    public final String STATUS_UNIX_EPOCH;
+    @NonNull
+    @StringForm
+    public String id;
+    @Period
+    @Nullable
+    public Long epoch;
+    @Period(to = Integer.MAX_VALUE)
+    @Nullable
+    public Integer first;
+    @Period(to = Integer.MAX_VALUE)
+    @Nullable
+    public Integer interval;
+    @Period(to = Integer.MAX_VALUE)
+    @Nullable
+    public Integer last;
+    @Nullable
+    public Boolean cancel;
 
-    public TimerServiceContract(String instanceID) {
-        super("Timer", "Tick", instanceID);
-        CONFIGURATION = "configuration";
-        STATUS_CONFIGURATION = STATUS + "/" + CONFIGURATION;
-        TICK = "tick";
-        EVENT_TICK = EVENT + "/" + TICK;
-        UNIX_EPOCH = "unixEpoch";
-        STATUS_UNIX_EPOCH = STATUS + "/" + UNIX_EPOCH;
+    public TimerIntent(String id) {
+        this.id = id;
     }
 
-    @Override
-    public void setMessageTopics(Map<String, Class<? extends Message>> messageTopicMap) {
-
-        messageTopicMap.put(INTENT, TimerIntent.class);
-        messageTopicMap.put(STATUS_CONFIGURATION + "/<id>", TimerConfigurationStatus.class);
-        messageTopicMap.put(EVENT_TICK + "/<id>", EpochDeltaEvent.class);
-        messageTopicMap.put(STATUS_UNIX_EPOCH, UnixEpochStatus.class);
-
+    private TimerIntent() {
     }
+    
+    public TimerIntent(String id,Boolean cancel){
+        this(id, null, null, null, null, cancel);
+    }
+
+    public TimerIntent(String id, Long epoch, Integer first, Integer interval, Integer last, Boolean cancel) {
+        this.id = id;
+        this.epoch = epoch;
+        this.first = first;
+        this.interval = interval;
+        this.last = last;
+        this.cancel = cancel;
+    }
+    
+    
+
 }

@@ -39,22 +39,24 @@
  *
  *
  */
-package ch.quantasy.gateway.message;
+package ch.quantasy.gateway.binding;
 
-import ch.quantasy.mqtt.gateway.client.message.AStatus;
+import ch.quantasy.mqtt.gateway.client.message.AnEvent;
 import ch.quantasy.mqtt.gateway.client.message.annotations.Period;
 
 /**
  *
  * @author reto
  */
-public class UnixEpochStatus extends AStatus{
+public class EpochDeltaEvent extends AnEvent{
+    @Period
+    Long value;
 
-        @Period
-        public long millisceconds;
-
-        public UnixEpochStatus() {
-            millisceconds = System.currentTimeMillis();
-        }
+    private EpochDeltaEvent() {
     }
 
+    public EpochDeltaEvent(Long value) {
+        this.value = value;
+    }
+    
+}

@@ -41,8 +41,8 @@
  */
 package ch.quantasy.gateway;
 
-import ch.quantasy.gateway.message.TimerIntent;
-import ch.quantasy.gateway.service.timer.TimerServiceContract;
+import ch.quantasy.gateway.binding.TimerIntent;
+import ch.quantasy.gateway.binding.TimerServiceContract;
 import ch.quantasy.mqtt.gateway.client.contract.AyamlServiceContract;
 import ch.quantasy.mqtt.gateway.client.GatewayClient;
 import ch.quantasy.mqtt.gateway.client.message.Message;

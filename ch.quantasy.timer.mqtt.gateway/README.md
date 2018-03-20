@@ -187,13 +187,13 @@ cancel: true
 
 ### Tick
 ```
-Timer/Tick/U/<instance>/E/tick/<id>
+Timer/Tick/U/<id>/E/tick/<id>
    timeStamp: Number <from: 0 to: 9223372036854775807>
    value: Number <from: 0 to: 9223372036854775807>
    
 ```
 ```
-Timer/Tick/U/<instance>/I
+Timer/Tick/U/<id>/I
    cancel: null
    cancel: Boolean <true,false> 
    epoch: null
@@ -209,7 +209,7 @@ Timer/Tick/U/<instance>/I
    
 ```
 ```
-Timer/Tick/U/<instance>/S/configuration/<id>
+Timer/Tick/U/<id>/S/configuration/<id>
    epoch: null
    epoch: Number <from: 0 to: 9223372036854775807>
    first: null
@@ -223,7 +223,13 @@ Timer/Tick/U/<instance>/S/configuration/<id>
    
 ```
 ```
-Timer/Tick/U/<instance>/S/unixEpoch
+Timer/Tick/U/<id>/S/connection
+   timeStamp: Number <from: 0 to: 9223372036854775807>
+   value: String <[online, offline]>
+   
+```
+```
+Timer/Tick/U/<id>/S/unixEpoch
    millisceconds: Number <from: 0 to: 9223372036854775807>
    timeStamp: Number <from: 0 to: 9223372036854775807>
    
