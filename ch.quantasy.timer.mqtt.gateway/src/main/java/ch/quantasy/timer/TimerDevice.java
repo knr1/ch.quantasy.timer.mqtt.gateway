@@ -41,6 +41,7 @@
  */
 package ch.quantasy.timer;
 
+import ch.quantasy.mqtt.gateway.client.GatewayClient;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.concurrent.Executors;
@@ -63,11 +64,7 @@ public class TimerDevice {
     public TimerDevice(TimerDeviceCallback callback) {
         this.callback = callback;
         tickerMap = new TreeMap<>();
-        this.timerService = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors(), (Runnable r) -> {
-            Thread t = Executors.defaultThreadFactory().newThread(r);
-            t.setDaemon(true);
-            return t;
-        });
+        this.timerService = GatewayClient.getTIMER_SERVICE();
     }
 
     public void cancel(DeviceTickerCancel cancel) {

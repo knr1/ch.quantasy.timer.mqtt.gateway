@@ -90,7 +90,7 @@ public class TimerService extends GatewayClient<TimerServiceContract> implements
             }
         });
         super.connect();
-        device.setTickerConfiguration(new DeviceTickerConfiguration(super.getParameters().getClientID(), null, null, 1000, null));
+        device.setTickerConfiguration(new DeviceTickerConfiguration(super.getIntent().clientID, null, null, 1000, null));
     }
 
     private SortedSet<DeviceTickerConfiguration> configurations;
@@ -100,7 +100,7 @@ public class TimerService extends GatewayClient<TimerServiceContract> implements
         if (configuration == null) {
             return;
         }
-        if (configuration.getId().equals(super.getParameters().getClientID())) {
+        if (configuration.getId().equals(super.getIntent().clientID)) {
             return;
         }
         configurations.add(configuration);
@@ -109,7 +109,7 @@ public class TimerService extends GatewayClient<TimerServiceContract> implements
 
     @Override
     public void onTick(String id, Long epochDelta) {
-        if (id.equals(super.getParameters().getClientID())) {
+        if (id.equals(super.getIntent().clientID)) {
             super.getPublishingCollector().readyToPublish(getContract().STATUS_UNIX_EPOCH, new UnixEpochStatus());
         } else {
             super.getPublishingCollector().readyToPublish(getContract().EVENT_TICK + "/" + id, new EpochDeltaEvent(epochDelta));
