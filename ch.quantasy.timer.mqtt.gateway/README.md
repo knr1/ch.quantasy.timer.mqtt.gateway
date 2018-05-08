@@ -188,50 +188,50 @@ cancel: true
 ### Tick
 ```
 Timer/Tick/U/<id>/E/tick/<id>
-   timeStamp: Number <from: 0 to: 9223372036854775807>
-   value: Number <from: 0 to: 9223372036854775807>
+   required: # this tag is not part of the data structure
+     timeStamp: Number <from: 0 to: 9223372036854775807> # default: Current time in nano seconds
+     value: Number <from: 0 to: 9223372036854775807>
    
 ```
 ```
 Timer/Tick/U/<id>/I
-   cancel: null
-   cancel: Boolean <true,false> 
-   epoch: null
-   epoch: Number <from: 0 to: 9223372036854775807>
-   first: null
-   first: Number <from: 0 to: 2147483647>
-   id: String <regEx: [\S\s]*>
-   interval: null
-   interval: Number <from: 0 to: 2147483647>
-   last: null
-   last: Number <from: 0 to: 2147483647>
-   timeStamp: Number <from: 0 to: 9223372036854775807>
+   optional: # this tag is not part of the data structure
+     cancel: Boolean <true,false>
+     epoch: Number <from: 0 to: 9223372036854775807>
+     first: Number <from: 0 to: 2147483647>
+     interval: Number <from: 0 to: 2147483647>
+     last: Number <from: 0 to: 2147483647>
+   
+   required: # this tag is not part of the data structure
+     id: String <regEx: [\S\s]*>
+     timeStamp: Number <from: 0 to: 9223372036854775807> # default: Current time in nano seconds
    
 ```
 ```
 Timer/Tick/U/<id>/S/configuration/<id>
-   epoch: null
-   epoch: Number <from: 0 to: 9223372036854775807>
-   first: null
-   first: Number <from: 0 to: 2147483647>
-   id: String <regEx: [\S\s]*>
-   interval: null
-   interval: Number <from: 0 to: 2147483647>
-   last: null
-   last: Number <from: 0 to: 2147483647>
-   timeStamp: Number <from: 0 to: 9223372036854775807>
+   optional: # this tag is not part of the data structure
+     epoch: Number <from: 0 to: 9223372036854775807>
+     first: Number <from: 0 to: 2147483647>
+     interval: Number <from: 0 to: 2147483647>
+     last: Number <from: 0 to: 2147483647>
+   
+   required: # this tag is not part of the data structure
+     id: String <regEx: [\S\s]*>
+     timeStamp: Number <from: 0 to: 9223372036854775807> # default: Current time in nano seconds
    
 ```
 ```
 Timer/Tick/U/<id>/S/connection
-   timeStamp: Number <from: 0 to: 9223372036854775807>
-   value: String <[online, offline]>
+   required: # this tag is not part of the data structure
+     timeStamp: Number <from: 0 to: 9223372036854775807> # default: Current time in nano seconds
+     value: String <[online, offline]>
    
 ```
 ```
 Timer/Tick/U/<id>/S/unixEpoch
-   millisceconds: Number <from: 0 to: 9223372036854775807>
-   timeStamp: Number <from: 0 to: 9223372036854775807>
+   required: # this tag is not part of the data structure
+     millisceconds: Number <from: 0 to: 9223372036854775807>
+     timeStamp: Number <from: 0 to: 9223372036854775807> # default: Current time in nano seconds
    
 ```
 
