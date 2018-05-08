@@ -185,6 +185,7 @@ cancel: true
 
 ## API
 
+                                                                        
 ### Tick
 ```
 Timer/Tick/U/<id>/E/tick/<id>
@@ -195,6 +196,9 @@ Timer/Tick/U/<id>/E/tick/<id>
 ```
 ```
 Timer/Tick/U/<id>/I
+   required: # this tag is not part of the data structure
+     id: String <regEx: [\S\s]*>
+     timeStamp: Number <from: 0 to: 9223372036854775807> # default: Current time in nano seconds
    optional: # this tag is not part of the data structure
      cancel: Boolean <true,false>
      epoch: Number <from: 0 to: 9223372036854775807>
@@ -202,22 +206,17 @@ Timer/Tick/U/<id>/I
      interval: Number <from: 0 to: 2147483647>
      last: Number <from: 0 to: 2147483647>
    
-   required: # this tag is not part of the data structure
-     id: String <regEx: [\S\s]*>
-     timeStamp: Number <from: 0 to: 9223372036854775807> # default: Current time in nano seconds
-   
 ```
 ```
 Timer/Tick/U/<id>/S/configuration/<id>
+   required: # this tag is not part of the data structure
+     id: String <regEx: [\S\s]*>
+     timeStamp: Number <from: 0 to: 9223372036854775807> # default: Current time in nano seconds
    optional: # this tag is not part of the data structure
      epoch: Number <from: 0 to: 9223372036854775807>
      first: Number <from: 0 to: 2147483647>
      interval: Number <from: 0 to: 2147483647>
      last: Number <from: 0 to: 2147483647>
-   
-   required: # this tag is not part of the data structure
-     id: String <regEx: [\S\s]*>
-     timeStamp: Number <from: 0 to: 9223372036854775807> # default: Current time in nano seconds
    
 ```
 ```
@@ -234,6 +233,7 @@ Timer/Tick/U/<id>/S/unixEpoch
      timeStamp: Number <from: 0 to: 9223372036854775807> # default: Current time in nano seconds
    
 ```
+
 
 
 [https://github.com/knr1/ch.quantasy.mqtt.gateway]:<https://github.com/knr1/ch.quantasy.mqtt.gateway>
